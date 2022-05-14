@@ -62,7 +62,7 @@ public class UserProvider {
         if(user.getPwd().equals(encryptPwd)){
             int userIdx = user.getUser_idx();
             String jwt = jwtService.createJwt(userIdx);
-            return new PostLoginRes(userIdx,jwt);
+            return new PostLoginRes(userIdx,user.getName(),jwt);
         }
         else{
             throw new BaseException(FAILED_TO_LOGIN);
