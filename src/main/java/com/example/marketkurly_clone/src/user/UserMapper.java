@@ -1,5 +1,5 @@
 package com.example.marketkurly_clone.src.user;
-import com.example.marketkurly_clone.src.user.*;
+
 import com.example.marketkurly_clone.src.user.model.GetUserRes;
 import com.example.marketkurly_clone.src.user.model.PostUserReq;
 import com.example.marketkurly_clone.src.user.model.*;

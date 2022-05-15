@@ -1,0 +1,57 @@
+package com.example.marketkurly_clone.src.product;
+
+import com.example.marketkurly_clone.config.BaseException;
+import com.example.marketkurly_clone.src.product.model.*;
+import com.example.marketkurly_clone.utils.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
+
+@Service
+public class ProductProvider {
+    private final JwtService jwtService;
+    private final ProductMapper productMapper;
+
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    public ProductProvider(ProductMapper productMapper, JwtService jwtService) {
+        this.productMapper = productMapper;
+        this.jwtService = jwtService;
+    }
+
+// 제품 상세페이지
+//    public GetProductDetailRes getProductDetail(int userIdx, int productIdx) throws BaseException{
+//        try{
+//
+//        }
+//        catch (Exception exception){
+//            System.out.println("provider의 catch부분");
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
+
+
+
+
+
+// 검색어로 제품 조회
+    public List<GetProductSearchRes> getProductsBySearch(String keyword) throws BaseException{
+
+            List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(keyword);
+            return  getProductSearchRes;
+
+
+    }
+
+
+
+
+
+
+}  /** class ProductProvider 닫는괄호 **/

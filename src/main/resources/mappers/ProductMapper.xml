@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.example.marketkurly_clone.src.product.ProductMapper'>
+
+    <select id="getProductSearchRes" parameterType="String" resultType="com.example.marketkurly_clone.src.product.model.GetProductSearchRes">
+        select product_idx, brand_name,name, subname, price, discount, discount_price, is_kurlyonly
+        from Product
+                 left join Brand B on Product.brand_idx = B.brand_idx
+        where name like concat('%', #{keyword}, '%')
+    </select>
+
+</mapper>
