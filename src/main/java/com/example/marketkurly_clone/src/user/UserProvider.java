@@ -5,6 +5,7 @@ import com.example.marketkurly_clone.config.BaseException;
 import com.example.marketkurly_clone.src.user.model.*;
 import com.example.marketkurly_clone.utils.JwtService;
 import com.example.marketkurly_clone.utils.SHA256;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,4 +71,17 @@ public class UserProvider {
 
     }
 
+    public void checkUserPhone(GetCheckUserInfoReq getCheckUserInfoReq) throws BaseException {
+        try{
+            int res = userMapper.checkPhone(getCheckUserInfoReq);
+            System.out.println(res);
+            if (res == 1 ){
+                throw new BaseException(PASSWORD_DECRYPTION_ERROR);
+            }
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+
+    }
 }

@@ -21,8 +21,34 @@
         insert into Address(address_desc, default_yn, recevied_name, recevied_phone, user_idx)
         values (#{address_desc}, 'Y', '', '', last_insert_id())
     </insert>
-    <select id="get_pwd" parameterType="com.example.marketkurly_clone.src.user.model.PostLoginReq" resultType="com.example.marketkurly_clone.src.user.model.User">
-        select user_idx ,id, pwd,name,email,phone,sex,birth  from User where id = #{id} and delete_yn = 'N';
+    <select id="get_pwd" parameterType="com.example.marketkurly_clone.src.user.model.PostLoginReq"
+            resultType="com.example.marketkurly_clone.src.user.model.User">
+        select user_idx,
+               id,
+               pwd,
+               name,
+               email,
+               phone,
+               sex,
+               birth
+        from User
+        where id = #{id}
+          and delete_yn = 'N';
+    </select>
+    <select id="checkPhone" parameterType="com.example.marketkurly_clone.src.user.model.PostLoginReq"
+            resultType="int">
+        select exists(select phone from User where
+        <if test="phone !=null">
+            phone = #{phone} and delete_yn = 'N'
+        </if>
+        <if test="id !=null">
+            id = #{id} and delete_yn = 'N'
+        </if>
+        <if test="email !=null">
+            email = #{email} and delete_yn = 'N'
+        </if>
+        )
+
     </select>
 
 </mapper>

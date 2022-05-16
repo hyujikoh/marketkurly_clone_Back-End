@@ -150,4 +150,24 @@ public class UserController {
     }
 
 
+    /**
+     * 휴대폰
+     *
+     *
+     */
+    @ResponseBody
+    @GetMapping("/join/check/phone")
+    public BaseResponse<String> checkUserPhone(@RequestBody GetCheckUserInfoReq getCheckUserInfoReq){
+        try{
+            userProvider.checkUserPhone(getCheckUserInfoReq);
+            String result = "사용가능";
+            return new BaseResponse<>(result);
+        }
+
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 }

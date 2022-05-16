@@ -16,5 +16,6 @@ public class GetProductSearchRes {
     private int discount;
     private int discount_price;
     private String is_kurlyonly;
+    private String url;
 
 }

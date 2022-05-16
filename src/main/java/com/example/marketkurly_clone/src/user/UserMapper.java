@@ -16,4 +16,5 @@ public interface UserMapper {
     int joinUser_address(PostUserReq postUserReq);
     int getIdx();
     User get_pwd(PostLoginReq postLoginReq);
+    int checkPhone(GetCheckUserInfoReq getCheckUserInfoReq);
 }
