@@ -156,7 +156,7 @@ public class UserController {
      *
      */
     @ResponseBody
-    @GetMapping("/join/check/phone")
+    @GetMapping("/join/check")
     public BaseResponse<String> checkUserPhone(@RequestBody GetCheckUserInfoReq getCheckUserInfoReq){
         try{
             userProvider.checkUserPhone(getCheckUserInfoReq);
