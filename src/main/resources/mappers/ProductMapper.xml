@@ -18,7 +18,7 @@
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
         where name like concat('%', #{keyword}, '%')
     </select>
-<!-- 상품 상세 페이지 관련 쿼리문-->
+    <!-- 상품 상세 페이지 관련 쿼리문-->
     <select id="getProductInfo" parameterType="int"
             resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailRes">
         select P.product_idx,
@@ -44,16 +44,20 @@
                  left join Brand B on P.brand_idx = B.brand_idx
         where P.product_idx = #{product_idx};
     </select>
-    <select id="islikely" parameterType="int" resultType="int">
+    <select id="islikely" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductOtherRes">
         select exists(select *
                       from Favorite
                       where product_idx = #{product_idx}
-                        and user_idx = #{userIdxByJwt}) as islike;
+                        and user_idx = #{userIdxByJwt}) as user_islike,
+               count(*)                                 as review_cnt
+        from ProductReview
+        where product_idx = #{product_idx};
     </select>
     <select id="reviewCount" parameterType="int" resultType="int">
         select count(*) as cnt
         from ProductReview
-        where product_idx =  #{product_idx};
+        where product_idx = #{product_idx};
     </select>
     <select id="getReviewList" parameterType="int"
             resultType="com.example.marketkurly_clone.src.product.model.GetProductReviewRes">

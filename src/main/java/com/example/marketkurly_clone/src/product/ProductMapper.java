@@ -15,7 +15,7 @@ public interface ProductMapper {
      * */
      List<GetProductDetailRes> getProductInfo(int product_idx);
      List<GetProductReviewRes> getReviewList(int product_idx);
-     int islikely(int product_idx, int userIdxByJwt);
+     List<GetProductOtherRes> islikely(int product_idx, int userIdxByJwt);
      int reviewCount(int product_idx);
 
 
