@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
@@ -50,8 +52,17 @@ public class ProductProvider {
     }
 
 
+    public List<String> getProductDetails(int product_idx, int userIdxByJwt) {
+
+            List Product_info = productMapper.getProductInfo(product_idx);
+            int islikely = productMapper.islikely(product_idx,userIdxByJwt);
+            int reviewCount = productMapper.reviewCount(product_idx);
+            List getReviewList = productMapper.getReviewList(product_idx);
+            List resultDetailList = new ArrayList<>(Arrays.asList(Product_info,islikely,reviewCount,getReviewList));
+            return resultDetailList;
 
 
 
 
+    }
 }  /** class ProductProvider 닫는괄호 **/

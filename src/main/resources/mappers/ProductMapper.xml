@@ -2,12 +2,70 @@
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace='com.example.marketkurly_clone.src.product.ProductMapper'>
 
-    <select id="getProductSearchRes" parameterType="String" resultType="com.example.marketkurly_clone.src.product.model.GetProductSearchRes">
-        select P.product_idx, brand_name,name, subname, price, discount, discount_price, is_kurlyonly,PI.url
+    <select id="getProductSearchRes" parameterType="String"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductSearchRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               PI.url
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
         where name like concat('%', #{keyword}, '%')
     </select>
+<!-- 상품 상세 페이지 관련 쿼리문-->
+    <select id="getProductInfo" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailRes">
+        select P.product_idx,
+               B.brand_name,
+               P.name,
+               P.subname,
+               P.price,
+               P.discount,
+               P.discount_price,
+               P.sales_unit,
+               P.weight,
+               P.source,
+               P.type,
+               P.packaging_type,
+               P.Allergie_info,
+               P.distinct_delivery,
+               P.notice,
+               P.shelf_life,
+               PI.url
 
+        from Product P
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+                 left join Brand B on P.brand_idx = B.brand_idx
+        where P.product_idx = #{product_idx};
+    </select>
+    <select id="islikely" parameterType="int" resultType="int">
+        select exists(select *
+                      from Favorite
+                      where product_idx = #{product_idx}
+                        and user_idx = #{userIdxByJwt}) as islike;
+    </select>
+    <select id="reviewCount" parameterType="int" resultType="int">
+        select count(*) as cnt
+        from ProductReview
+        where product_idx =  #{product_idx};
+    </select>
+    <select id="getReviewList" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductReviewRes">
+        select PR.review_idx,
+               PR.review_title,
+               PR.review_desc,
+               PR.update_at,
+               U.name as user_name,
+               PR.views,
+               PR.help_count
+        from ProductReview PR
+                 inner join User U on PR.user_idx = U.user_idx
+        where product_idx = #{product_idx}
+    </select>
 </mapper>
