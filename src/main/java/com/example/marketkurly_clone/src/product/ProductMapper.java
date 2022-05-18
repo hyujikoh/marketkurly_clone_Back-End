@@ -19,4 +19,5 @@ public interface ProductMapper {
      int reviewCount(int product_idx);
 
 
+     List Product_detail_info(int product_idx);
 }

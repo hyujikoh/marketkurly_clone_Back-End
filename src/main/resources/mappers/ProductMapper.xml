@@ -72,4 +72,12 @@
                  inner join User U on PR.user_idx = U.user_idx
         where product_idx = #{product_idx}
     </select>
+
+    <select id="Product_detail_info" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
+        select name, origin_price, discount_price, save_point_yn
+        from ProductDetailList
+        where product_idx = #{product_idx};
+    </select>
+
 </mapper>

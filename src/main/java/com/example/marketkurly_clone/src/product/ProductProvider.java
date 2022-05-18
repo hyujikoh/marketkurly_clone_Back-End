@@ -55,10 +55,10 @@ public class ProductProvider {
     public List<String> getProductDetails(int product_idx, int userIdxByJwt) {
 
             List Product_info = productMapper.getProductInfo(product_idx);
+            List Product_detail_info = productMapper.Product_detail_info(product_idx);
             List islikely = productMapper.islikely(product_idx,userIdxByJwt);
-
             List getReviewList = productMapper.getReviewList(product_idx);
-            List resultDetailList = new ArrayList<>(Arrays.asList(Product_info,islikely,getReviewList));
+            List resultDetailList = new ArrayList<>(Arrays.asList(Product_info,Product_detail_info,islikely,getReviewList));
             return resultDetailList;
 
 
