@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
 import static com.example.marketkurly_clone.utils.ValidationRegex.isRegexEmail;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/app/users")
 public class UserController {
@@ -151,7 +151,7 @@ public class UserController {
 
 
     /**
-     * 휴대폰
+     * 유저 정보 중복여부 체크
      *
      *
      */

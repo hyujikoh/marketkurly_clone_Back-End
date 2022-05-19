@@ -113,6 +113,23 @@ public class ProductController {
         }
     }
 
+
+    @ResponseBody
+    @PostMapping("/{product_idx}/addcart")
+    public BaseResponse<List<String>> PostAddCart(@PathVariable("product_idx") int product_idx,@RequestBody PostAddCartListReq postAddCartListReq) {
+        try {
+
+            int userIdxByJwt = jwtService.getUserIdx();
+            System.out.println(userIdxByJwt);
+            postAddCartListReq.setUser_idx(userIdxByJwt);
+            postAddCartListReq.setProduct_idx(product_idx);
+            List<String> PostAddCartRes = productService.PostAddCart(postAddCartListReq,userIdxByJwt,product_idx);
+
+            return new BaseResponse<>(PostAddCartRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 } /**
  * class ProductController 끝나는 괄호
  **/

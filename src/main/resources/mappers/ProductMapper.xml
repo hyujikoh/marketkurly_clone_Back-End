@@ -123,4 +123,10 @@
             where CPM.category_idx = #{Category}
         </if>
     </select>
+
+    <insert id="PostAddCart" parameterType="int">
+
+                insert into Cart values (#{userIdxByJwt},#{product_idx},#{product_detail_idx},#{count})
+
+    </insert>
 </mapper>

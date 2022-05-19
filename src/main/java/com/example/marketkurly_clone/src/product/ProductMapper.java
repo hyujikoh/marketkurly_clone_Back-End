@@ -24,4 +24,6 @@ public interface ProductMapper {
      //
      List<GetProductDetailRes> getProductCategoryRes(int Category);
      int getProductCount(int Category);
+
+     int PostAddCart(int product_detail_idx, int count,int userIdxByJwt,int product_idx);
 }
