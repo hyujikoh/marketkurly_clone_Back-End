@@ -12,10 +12,11 @@ public class GetProductSearchRes {
     private String brand_name; // 제품 이름
     private String name; // 제품 이름
     private String subname; // 제품 제목
-    private int price;  // 제품 가격
-    private int discount;
-    private int discount_price;
+    private String price;  // 제품 가격
+    private String discount;
+    private String discount_price;
     private String is_kurlyonly;
+    private int sales_count;
     private String url;
 
 }

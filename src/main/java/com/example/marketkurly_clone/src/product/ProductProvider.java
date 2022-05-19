@@ -48,10 +48,10 @@ public class ProductProvider {
             List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(keyword);
             return  getProductSearchRes;
 
-
     }
 
-
+// 상품 상세 조회 API
+    // 후에 관련된 상품(카테코리로 기준으로 랜덤 상품 조회 조회)
     public List<String> getProductDetails(int product_idx, int userIdxByJwt) {
 
             List Product_info = productMapper.getProductInfo(product_idx);
@@ -61,8 +61,11 @@ public class ProductProvider {
             List resultDetailList = new ArrayList<>(Arrays.asList(Product_info,Product_detail_info,islikely,getReviewList));
             return resultDetailList;
 
+    }
 
-
-
+    public List<String> getProductByCategory(int Category) throws BaseException {
+        List ProductCategoryRes = productMapper.getProductCategoryRes(Category);
+        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCategoryRes));
+        return resultDetailList;
     }
 }  /** class ProductProvider 닫는괄호 **/

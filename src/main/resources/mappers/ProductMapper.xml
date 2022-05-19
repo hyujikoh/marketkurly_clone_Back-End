@@ -80,4 +80,27 @@
         where product_idx = #{product_idx};
     </select>
 
+
+    <select id="getProductCategoryRes" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductSearchRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+                 left join (select CPM2.category_idx, C.category_parent, CPM2.product_idx
+                            from CategortProductMapping CPM2
+                                     inner join Category C on CPM2.category_idx = C.category_idx) CPM
+                           on P.product_idx = CPM.product_idx
+        where CPM.category_idx = #{Category}
+           or CPM.category_parent = #{Category}
+    </select>
 </mapper>

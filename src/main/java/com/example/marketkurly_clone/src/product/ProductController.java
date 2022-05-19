@@ -65,7 +65,7 @@ public class ProductController {
      * [PATCH] /:userIdx/:progress
      *
      * @return BaseResponse<list < String>>
-     * 유저인덱스와 판매진행 상태 progress 를 매개변수로 받아서 유저 메인페이지 조회
+     * 판매중인 상품 상세페이지 조회 하여 나눔
      */
 
     @GetMapping("/{product_idx}") // (GET) 127.0.0.1:9000/app/hotels/:hotelIdx
@@ -79,16 +79,39 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }*/
             //같다면 유저네임 변경
-            List<String> getUserMainPage = productProvider.getProductDetails(product_idx,userIdxByJwt);
+            List<String> getProductDetail = productProvider.getProductDetails(product_idx,userIdxByJwt);
 
-            String result = "";
-            return new BaseResponse<>(getUserMainPage);
+            return new BaseResponse<>(getProductDetail);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
 
     }
 
+
+
+    /**
+     * 검색어로 제품 조회 API
+     * [GET] products/productName?Keyword=
+     */
+    @GetMapping("/product")
+    public BaseResponse<List<String>> getProductByCategory(@RequestParam(required = true) int Category) {
+        try {
+//            if (Category == ) { // 검색어를 입력하지 않았을 때
+//                System.out.println("검색어 입력 안함");
+//                return new BaseResponse<>(EMPTY_REQUEST); // 2004 키워드를 입력하지 않았습니다
+//            }
+            List<String> getProductCategoryRes = productProvider.getProductByCategory(Category);
+            if (getProductCategoryRes.size() == 0) { // 검색어에 해당하는 정보가 없을 때
+                System.out.println("검색어에 해당하는 정보 없음");
+                return new BaseResponse<>(EMPTY_RESPONSE); // 3001 입력한 키워드에 대한 검색결과가 없습니다.
+            } else {
+                return new BaseResponse<>(getProductCategoryRes);
+            }
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 } /**
  * class ProductController 끝나는 괄호

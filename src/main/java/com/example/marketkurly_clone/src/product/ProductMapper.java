@@ -20,4 +20,7 @@ public interface ProductMapper {
 
 
      List Product_detail_info(int product_idx);
+
+     //
+     List<GetProductDetailRes> getProductCategoryRes(int Category);
 }
