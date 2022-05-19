@@ -23,4 +23,5 @@ public interface ProductMapper {
 
      //
      List<GetProductDetailRes> getProductCategoryRes(int Category);
+     int getProductCount(int Category);
 }

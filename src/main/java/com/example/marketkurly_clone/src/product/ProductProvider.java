@@ -65,7 +65,8 @@ public class ProductProvider {
 
     public List<String> getProductByCategory(int Category) throws BaseException {
         List ProductCategoryRes = productMapper.getProductCategoryRes(Category);
-        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCategoryRes));
+        int ProductCountRes = productMapper.getProductCount(Category);
+        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes,ProductCategoryRes));
         return resultDetailList;
     }
 }  /** class ProductProvider 닫는괄호 **/
