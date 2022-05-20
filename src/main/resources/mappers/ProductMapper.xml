@@ -12,6 +12,7 @@
                discount,
                discount_price,
                is_kurlyonly,
+               P.sales_count,
                PI.url
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
@@ -124,6 +125,10 @@
         </if>
     </select>
 
+    <select id="getProductCount1" parameterType="String" resultType="int">
+
+    select count(*) from Product where name like concat('%', #{Keyword}, '%')
+    </select>
     <insert id="PostAddCart" parameterType="int">
 
                 insert into Cart values (#{userIdxByJwt},#{product_idx},#{product_detail_idx},#{count})

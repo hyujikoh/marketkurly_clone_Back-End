@@ -43,10 +43,12 @@ public class ProductProvider {
 
 
 // 검색어로 제품 조회
-    public List<GetProductSearchRes> getProductsBySearch(String keyword) throws BaseException{
+    public List<String> getProductsBySearch(String Keyword) throws BaseException{
+            int ProductCountRes = productMapper.getProductCount1(Keyword);
+            List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(Keyword);
 
-            List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(keyword);
-            return  getProductSearchRes;
+        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes,getProductSearchRes));
+            return  resultDetailList;
 
     }
 

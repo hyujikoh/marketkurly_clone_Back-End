@@ -40,7 +40,7 @@ public class ProductController {
      */
     @ResponseBody
     @GetMapping("/productName")
-    public BaseResponse<List<GetProductSearchRes>> getProductBySearch(@RequestParam(required = false) String Keyword) {
+    public BaseResponse<List<String>> getProductBySearch(@RequestParam(required = false) String Keyword) {
         //System.out.println("키워드 컨트롤러 들어옴");
         //.out.println(Keyword);
         try {
@@ -48,7 +48,7 @@ public class ProductController {
                 System.out.println("검색어 입력 안함");
                 return new BaseResponse<>(EMPTY_REQUEST); // 2004 키워드를 입력하지 않았습니다
             }
-            List<GetProductSearchRes> getProductSearchRes = productProvider.getProductsBySearch(Keyword);
+            List<String> getProductSearchRes = productProvider.getProductsBySearch(Keyword);
             if (getProductSearchRes.size() == 0) { // 검색어에 해당하는 정보가 없을 때
                 System.out.println("검색어에 해당하는 정보 없음");
                 return new BaseResponse<>(EMPTY_RESPONSE); // 3001 입력한 키워드에 대한 검색결과가 없습니다.
