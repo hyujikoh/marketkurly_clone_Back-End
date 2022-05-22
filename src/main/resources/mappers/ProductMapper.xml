@@ -134,4 +134,14 @@
                 insert into Cart values (#{userIdxByJwt},#{product_idx},#{product_detail_idx},#{count})
 
     </insert>
+
+    <select id="CheckExistProduct" parameterType="int" resultType="int">
+
+        select exists(select * from Cart where product_idx=#{product_idx} and user_idx = #{userIdxByJwt} and product_detail_idx = #{product_detail_idx})
+    </select>
+
+    <update id="UpdateAddCart" parameterType="int">
+        update Cart set product_amount = product_amount + #{count} where user_idx = #{userIdxByJwt} and product_detail_idx = #{product_detail_idx} and product_idx = #{product_idx}
+    </update>
+
 </mapper>

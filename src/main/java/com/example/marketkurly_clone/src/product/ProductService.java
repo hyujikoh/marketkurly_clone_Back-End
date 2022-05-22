@@ -33,13 +33,19 @@ public class ProductService {
 
         int len = postAddCartListReq.getAddCartList().size();
         System.out.println(postAddCartListReq.getAddCartList().get(0));
-        System.out.println(postAddCartListReq.getAddCartList().get(1));
 
         System.out.println("qwe");
         System.out.println(len);
         List array123 = new ArrayList<>();
+
         for (int i = 0; i < len; i++) {
-            array123.add(productMapper.PostAddCart(postAddCartListReq.getAddCartList().get(i).getProduct_detail_idx(), postAddCartListReq.getAddCartList().get(i).getCount(), userIdxByJwt, product_idx));
+            int CheckExistProduct = productMapper.CheckExistProduct((postAddCartListReq.getAddCartList().get(i).getProduct_detail_idx()), userIdxByJwt, product_idx);
+            if(CheckExistProduct == 1 ) {
+                array123.add(productMapper.UpdateAddCart(postAddCartListReq.getAddCartList().get(i).getProduct_detail_idx(), postAddCartListReq.getAddCartList().get(i).getCount(), userIdxByJwt, product_idx));
+            }
+            else {
+                array123.add(productMapper.PostAddCart(postAddCartListReq.getAddCartList().get(i).getProduct_detail_idx(), postAddCartListReq.getAddCartList().get(i).getCount(), userIdxByJwt, product_idx));
+            }
         }
         return array123;
 
