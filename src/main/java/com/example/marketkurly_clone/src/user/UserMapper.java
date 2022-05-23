@@ -17,4 +17,8 @@ public interface UserMapper {
     int getIdx();
     User get_pwd(PostLoginReq postLoginReq);
     int checkPhone(GetCheckUserInfoReq getCheckUserInfoReq);
+
+    List<GetUserCartRes> getUserCartList(int user_idx);
+
+
 }

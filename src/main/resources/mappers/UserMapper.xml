@@ -19,7 +19,7 @@
 
     <insert id="joinUser_address" parameterType="com.example.marketkurly_clone.src.user.model.PostUserReq">
         insert into Address(address_desc, default_yn, recevied_name, recevied_phone, user_idx)
-        values (#{address_desc}, 'Y', '', '', last_insert_id())
+        values (#{address_desc}, 'N', '', '', last_insert_id())
     </insert>
     <select id="get_pwd" parameterType="com.example.marketkurly_clone.src.user.model.PostLoginReq"
             resultType="com.example.marketkurly_clone.src.user.model.User">
@@ -48,6 +48,30 @@
             email = #{email} and delete_yn = 'N'
         </if>
         )
+
+    </select>
+
+
+
+    <select id="getUserCartList" parameterType="int" resultType="com.example.marketkurly_clone.src.user.model.GetUserCartRes">
+        select J1.product_idx,
+               J1.url,
+               J1.name,
+               J2.name,
+               C.product_amount,
+               case when J2.`index` is null then J1.price else J2.origin_price end            as price,
+               case when J2.`index` is null then J1.discount_price else J2.discount_price end as discount_price,
+               J2.index as idx
+        from Cart C
+                 left join (select P.product_idx, PI.url, P.name, P.price, P.discount_price
+                            from Product P
+
+                                     left join ProductImage PI on P.product_idx = PI.product_idx) J1
+                           on J1.product_idx = C.product_idx
+                 left join (select * from ProductDetailList) J2 on J2.`index` = C.product_detail_idx
+        where C.user_idx =#{user_idx}
+;
+
 
     </select>
 

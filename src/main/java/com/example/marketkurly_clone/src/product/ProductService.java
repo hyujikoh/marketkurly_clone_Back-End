@@ -1,6 +1,5 @@
 package com.example.marketkurly_clone.src.product;
 
-import com.example.marketkurly_clone.config.BaseException;
 import com.example.marketkurly_clone.src.product.model.*;
 import com.example.marketkurly_clone.utils.JwtService;
 import org.slf4j.Logger;

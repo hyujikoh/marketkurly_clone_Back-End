@@ -84,4 +84,9 @@ public class UserProvider {
 
 
     }
+
+    public List<String> getUserCartList(int user_idx) {
+        List getUserCartRes = userMapper.getUserCartList(user_idx);
+        return getUserCartRes;
+    }
 }

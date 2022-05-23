@@ -170,4 +170,25 @@ public class UserController {
     }
 
 
+
+    @ResponseBody
+    @GetMapping("/{user_idx}/Cart")
+    public BaseResponse<List<String>> getUserCartList(@PathVariable("user_idx")int  user_idx){
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(user_idx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //같다면 유저네임 변경
+            List<String> getUserCartList = userProvider.getUserCartList(user_idx);
+            return new BaseResponse<>(getUserCartList);
+        }
+
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 }
