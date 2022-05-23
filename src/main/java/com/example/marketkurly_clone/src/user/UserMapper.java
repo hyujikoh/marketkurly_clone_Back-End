@@ -21,4 +21,9 @@ public interface UserMapper {
     List<GetUserCartRes> getUserCartList(int user_idx);
 
 
+    void updatedefult_to_n(int user_idx);
+
+    void CreateUserAddress(PostUserAddressReq postUserAddressReq);
+
+
 }

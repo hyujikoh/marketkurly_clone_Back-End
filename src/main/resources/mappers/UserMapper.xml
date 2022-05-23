@@ -19,7 +19,7 @@
 
     <insert id="joinUser_address" parameterType="com.example.marketkurly_clone.src.user.model.PostUserReq">
         insert into Address(address_desc, default_yn, recevied_name, recevied_phone, user_idx)
-        values (#{address_desc}, 'N', '', '', last_insert_id())
+        values (#{address_desc}, 'Y', '', '', last_insert_id())
     </insert>
     <select id="get_pwd" parameterType="com.example.marketkurly_clone.src.user.model.PostLoginReq"
             resultType="com.example.marketkurly_clone.src.user.model.User">
@@ -52,7 +52,6 @@
     </select>
 
 
-
     <select id="getUserCartList" parameterType="int" resultType="com.example.marketkurly_clone.src.user.model.GetUserCartRes">
         select J1.product_idx,
                J1.url,
@@ -74,5 +73,11 @@
 
 
     </select>
-
+    <update id="updatedefult_to_n" parameterType="int">
+        update Address set default_yn ='N' where user_idx= #{user_idx} and default_yn ='Y'
+    </update>
+    <insert id="CreateUserAddress" parameterType="com.example.marketkurly_clone.src.user.model.PostUserAddressReq">
+        insert into Address(address_main,address_desc, default_yn, recevied_name, recevied_phone, user_idx)
+        values (#{address_main},#{address_desc},#{default_yn}, '', '', #{user_idx})
+    </insert>
 </mapper>

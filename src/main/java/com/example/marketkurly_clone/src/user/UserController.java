@@ -189,6 +189,32 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+    @ResponseBody
+    @PostMapping("/Address")
+    public BaseResponse<PostUserAddressReq> PostUserAddress(@RequestBody PostUserAddressReq postUserAddressReq){
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(postUserAddressReq.getUser_idx()!=userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
 
+            if("Y".equals(postUserAddressReq.getDefault_yn() )){
+                System.out.println(postUserAddressReq.getDefault_yn());
+                PostUserAddressReq postUserAddressReqResult = userService.PostUpdateAddress(postUserAddressReq);
+                return new BaseResponse<>(postUserAddressReqResult);
+            }
+
+            else{
+                PostUserAddressReq postUserAddressReqResult= userService.PostUserAddress(postUserAddressReq);
+                return new BaseResponse<>(postUserAddressReqResult);
+            }
+
+        }
+
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

@@ -70,4 +70,18 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public PostUserAddressReq PostUpdateAddress(PostUserAddressReq postUserAddressReq) {
+        // 1. 디폴트 배송지로 되어저 있는 배송지를 defalut_yn 을 n 으로 바뀐다.
+        userMapper.updatedefult_to_n(postUserAddressReq.getUser_idx());
+        System.out.println("update");
+        // 2. 상품을 등록하는데 디폴트 주소여부를 Y로 한다.
+        userMapper.CreateUserAddress(postUserAddressReq);
+        return postUserAddressReq;
+    }
+
+    public PostUserAddressReq PostUserAddress(PostUserAddressReq postUserAddressReq) {
+        userMapper.CreateUserAddress(postUserAddressReq);
+        return postUserAddressReq;
+    }
 }
