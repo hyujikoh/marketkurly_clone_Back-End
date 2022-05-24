@@ -39,47 +39,57 @@ public class ProductProvider {
 //    }
 
 
-
-
-
 // 검색어로 제품 조회
-    public List<String> getProductsBySearch(String Keyword) throws BaseException{
-            int ProductCountRes = productMapper.getProductCount1(Keyword);
-            List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(Keyword);
-            List array123 = new ArrayList<>();
-            for (int i = 0; i<ProductCountRes;i++){
-
-                GetProductSearchRes Product_info = productMapper.getProductSearchRes_key(getProductSearchRes.get(i).getProduct_idx());
-                List Product_detail_info = productMapper.Product_detail_info_keyword(getProductSearchRes.get(i).getProduct_idx());
-                List DetailList = new ArrayList<>(Arrays.asList(Product_info,Product_detail_info));
-                array123.add(DetailList);
-            }
 
 
-
-        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes,array123));
-            return  resultDetailList;
-
-    }
-
-// 상품 상세 조회 API
+    // 상품 상세 조회 API
     // 후에 관련된 상품(카테코리로 기준으로 랜덤 상품 조회 조회)
     public List<String> getProductDetails(int product_idx, int userIdxByJwt) {
 
-            List Product_info = productMapper.getProductInfo(product_idx);
-            List Product_detail_info = productMapper.Product_detail_info(product_idx);
-            List islikely = productMapper.islikely(product_idx,userIdxByJwt);
-            List getReviewList = productMapper.getReviewList(product_idx);
-            List resultDetailList = new ArrayList<>(Arrays.asList(Product_info,Product_detail_info,islikely,getReviewList));
-            return resultDetailList;
+        List Product_info = productMapper.getProductInfo(product_idx);
+        List Product_detail_info = productMapper.Product_detail_info(product_idx);
+        List islikely = productMapper.islikely(product_idx, userIdxByJwt);
+        List getReviewList = productMapper.getReviewList(product_idx);
+        List resultDetailList = new ArrayList<>(Arrays.asList(Product_info, Product_detail_info, islikely, getReviewList));
+        return resultDetailList;
 
     }
 
     public List<String> getProductByCategory(int Category) throws BaseException {
 
-        List ProductCategoryRes = productMapper.getProductCategoryRes(Category);
+        List <GetProductSearchRes> productCategoryRes = productMapper.getProductCategoryRes(Category);
         int ProductCountRes = productMapper.getProductCount(Category);
-        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes,ProductCategoryRes));
+
+        List array123 = new ArrayList<>();
+
+        for (int i =0;i<ProductCountRes;i++){
+            GetProductSearchRes Product_info = productMapper.getProductSearchRes_key(productCategoryRes.get(i).getProduct_idx());
+            List Product_detail_info = productMapper.Product_detail_info_keyword(productCategoryRes.get(i).getProduct_idx());
+            List DetailList = new ArrayList<>(Arrays.asList(Product_info, Product_detail_info));
+            array123.add(DetailList);
+        }
+        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes, array123));
         return resultDetailList;
     }
-}  /** class ProductProvider 닫는괄호 **/
+
+    /**
+     * class ProductProvider 닫는괄호
+     **/
+    public List<String> getProductsBySearch(String Keyword) throws BaseException {
+        int ProductCountRes = productMapper.getProductCount1(Keyword);
+        List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(Keyword);
+        List array123 = new ArrayList<>();
+        for (int i = 0; i < ProductCountRes; i++) {
+
+            GetProductSearchRes Product_info = productMapper.getProductSearchRes_key(getProductSearchRes.get(i).getProduct_idx());
+            List Product_detail_info = productMapper.Product_detail_info_keyword(getProductSearchRes.get(i).getProduct_idx());
+            List DetailList = new ArrayList<>(Arrays.asList(Product_info, Product_detail_info));
+            array123.add(DetailList);
+        }
+
+
+        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes, array123));
+        return resultDetailList;
+
+    }
+}
