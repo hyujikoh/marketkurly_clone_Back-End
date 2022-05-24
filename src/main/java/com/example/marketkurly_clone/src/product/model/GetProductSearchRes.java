@@ -1,6 +1,7 @@
 package com.example.marketkurly_clone.src.product.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +19,6 @@ public class GetProductSearchRes {
     private String is_kurlyonly;
     private int sales_count;
     private String url;
+    private String update_at;
 
 }

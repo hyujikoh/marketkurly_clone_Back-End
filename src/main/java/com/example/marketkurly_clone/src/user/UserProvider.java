@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
@@ -19,7 +21,6 @@ import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
 @Service
 public class UserProvider {
 
-    private final UserDao userDao;
     private final JwtService jwtService;
     private final UserMapper userMapper;
 
@@ -27,8 +28,8 @@ public class UserProvider {
 
 
     @Autowired
-    public UserProvider(UserDao userDao, JwtService jwtService,UserMapper userMapper) {
-        this.userDao = userDao;
+    public UserProvider( JwtService jwtService,UserMapper userMapper) {
+
         this.jwtService = jwtService;
         this.userMapper = userMapper;
     }
@@ -87,7 +88,18 @@ public class UserProvider {
 
     public List<String> getUserCartList(int user_idx) {
         List getUserCartRes = userMapper.getUserCartList(user_idx);
-        return getUserCartRes;
+        List getUserLikeAddress = userMapper.getUserLikeAddress(user_idx);
+        List resultDetailList = new ArrayList<>(Arrays.asList(getUserCartRes,getUserLikeAddress));
+        return resultDetailList;
     }
 
+    public List<String> GetUserAddress(int user_idx) {
+        List getUserAddressList = userMapper.GetUserAddress(user_idx);
+        return getUserAddressList;
+    }
+
+    public int CheckUserFavrotite(int userIdxByJwt, int product_idx) {
+        int res = userMapper.CheckUserFavrotite(userIdxByJwt,product_idx);
+        return res;
+    }
 }

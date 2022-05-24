@@ -13,7 +13,8 @@
                discount_price,
                is_kurlyonly,
                P.sales_count,
-               PI.url
+               PI.url,
+               P.update_at
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
@@ -38,8 +39,8 @@
                P.distinct_delivery,
                P.notice,
                P.shelf_life,
-               PI.url
-
+               PI.url,
+               P.maxminum_purchase
         from Product P
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
                  left join Brand B on P.brand_idx = B.brand_idx
@@ -76,7 +77,7 @@
 
     <select id="Product_detail_info" parameterType="int"
             resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
-        select name, origin_price, discount_price, save_point_yn
+        select `index`,name, origin_price, discount_price, save_point_yn
         from ProductDetailList
         where product_idx = #{product_idx};
     </select>
@@ -93,7 +94,8 @@
                         discount_price,
                         is_kurlyonly,
                         P.sales_count,
-                        PI.url
+                        PI.url,
+                        P.update_at
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx

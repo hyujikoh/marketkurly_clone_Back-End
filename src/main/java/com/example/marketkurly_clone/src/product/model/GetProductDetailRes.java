@@ -25,6 +25,7 @@ public class GetProductDetailRes {
     private String notice;
     private String shelf_life;
     private String url;
+    private String maxminum_purchase;
 
 
 

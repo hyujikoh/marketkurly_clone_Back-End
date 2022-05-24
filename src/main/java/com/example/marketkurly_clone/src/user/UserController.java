@@ -128,26 +128,26 @@ public class UserController {
      * [PATCH] /users/:userIdx
      * @return BaseResponse<String>
      */
-    @ResponseBody
-    @PatchMapping("/{userIdx}")
-    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user){
-        try {
-            //jwt에서 idx 추출.
-            int userIdxByJwt = jwtService.getUserIdx();
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-            //같다면 유저네임 변경
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx,user.getName());
-            userService.modifyUserName(patchUserReq);
-
-            String result = "";
-        return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
+//    @ResponseBody
+//    @PatchMapping("/{userIdx}")
+//    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user){
+//        try {
+//            //jwt에서 idx 추출.
+//            int userIdxByJwt = jwtService.getUserIdx();
+//            //userIdx와 접근한 유저가 같은지 확인
+//            if(userIdx != userIdxByJwt){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//            //같다면 유저네임 변경
+//            PatchUserReq patchUserReq = new PatchUserReq(userIdx,user.getName());
+//            userService.modifyUserName(patchUserReq);
+//
+//            String result = "";
+//        return new BaseResponse<>(result);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 
 
     /**
@@ -190,15 +190,15 @@ public class UserController {
         }
     }
     @ResponseBody
-    @PostMapping("/Address")
-    public BaseResponse<PostUserAddressReq> PostUserAddress(@RequestBody PostUserAddressReq postUserAddressReq){
+    @PostMapping("/{user_idx}/Address")
+    public BaseResponse<PostUserAddressReq> PostUserAddress(@PathVariable("user_idx") int user_idx,@RequestBody PostUserAddressReq postUserAddressReq){
         try{
             int userIdxByJwt = jwtService.getUserIdx();
             //userIdx와 접근한 유저가 같은지 확인
-            if(postUserAddressReq.getUser_idx()!=userIdxByJwt){
+            if(user_idx!=userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-
+            postUserAddressReq.setUser_idx(user_idx);
             if("Y".equals(postUserAddressReq.getDefault_yn() )){
                 System.out.println(postUserAddressReq.getDefault_yn());
                 PostUserAddressReq postUserAddressReqResult = userService.PostUpdateAddress(postUserAddressReq);
@@ -216,5 +216,86 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+    @ResponseBody
+    @GetMapping("/{user_idx}/Address")
+    public BaseResponse<List<String>> GetUserAddress(@PathVariable ("user_idx") int user_idx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(user_idx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+
+            }
+            List<String> getUserAddressList = userProvider.GetUserAddress(user_idx);
+            return new BaseResponse<>(getUserAddressList);
+        }
+
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/{user_idx}/Address/{address_idx}")
+    public BaseResponse<PatchUserAddressReq> PatchUserAddress(@PathVariable("user_idx") int user_idx,@PathVariable("address_idx") int address_idx , @RequestBody PatchUserAddressReq patchUserAddressReq){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(user_idx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+
+            }
+            patchUserAddressReq.setUser_idx(user_idx);
+            patchUserAddressReq.setAddress_idx(address_idx);
+            if("Y".equals(patchUserAddressReq.getDefault_yn() )){
+                System.out.println(patchUserAddressReq.getDefault_yn());
+                PatchUserAddressReq postUserAddressReqResult = userService.PatchUpdateAddress(patchUserAddressReq);
+                return new BaseResponse<>(postUserAddressReqResult);
+            }
+
+            else{
+                PatchUserAddressReq postUserAddressReqResult= userService.PatchUserAddress(patchUserAddressReq);
+                return new BaseResponse<>(postUserAddressReqResult);
+            }
+
+        }
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @PatchMapping("/{user_idx}/Address/{address_idx}/like")
+    public BaseResponse<String> PatchUserLikeAddresss(@PathVariable("user_idx") int user_idx,@PathVariable("address_idx") int address_idx){
+
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(user_idx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            userService.PatchUserLikeAddresss(user_idx,address_idx);
+            String result = "즐겨찾기 수정완료";
+            return new BaseResponse<>(result);
+
+        }
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+
+    @PostMapping("/favorite/{product_idx}")
+    public BaseResponse<String> PostUserFavorite(@PathVariable("product_idx") int product_idx){
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+            userService.PostUserFavorite(userIdxByJwt,product_idx);
+            String result = "생성완료";
+            return new BaseResponse<>(result);
+        }
+        catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 
 }

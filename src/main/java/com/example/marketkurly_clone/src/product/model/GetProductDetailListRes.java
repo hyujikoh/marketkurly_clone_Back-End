@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetProductDetailListRes {
+    private int index;
     private String name;
     private int origin_price;
     private int discount_price;

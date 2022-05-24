@@ -18,18 +18,19 @@ import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
 public class UserService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final UserDao userDao;
     private final UserProvider userProvider;
     private final JwtService jwtService;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService,UserMapper userMapper) {
-        this.userDao = userDao;
+    public UserService( UserProvider userProvider, JwtService jwtService,UserMapper userMapper) {
         this.userProvider = userProvider;
         this.jwtService = jwtService;
         this.userMapper = userMapper;
     }
+
+
+
 
     //POST
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
@@ -60,16 +61,16 @@ public class UserService {
 
     }
 
-    public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {
-        try{
-            int result = userDao.modifyUserName(patchUserReq);
-            if(result == 0){
-                throw new BaseException(MODIFY_FAIL_USERNAME);
-            }
-        } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
+//    public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {
+//        try{
+//            int result = userDao.modifyUserName(patchUserReq);
+//            if(result == 0){
+//                throw new BaseException(MODIFY_FAIL_USERNAME);
+//            }
+//        } catch(Exception exception){
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
     public PostUserAddressReq PostUpdateAddress(PostUserAddressReq postUserAddressReq) {
         // 1. 디폴트 배송지로 되어저 있는 배송지를 defalut_yn 을 n 으로 바뀐다.
@@ -83,5 +84,45 @@ public class UserService {
     public PostUserAddressReq PostUserAddress(PostUserAddressReq postUserAddressReq) {
         userMapper.CreateUserAddress(postUserAddressReq);
         return postUserAddressReq;
+    }
+
+
+    public PatchUserAddressReq PatchUpdateAddress(PatchUserAddressReq patchUserAddressReq) {
+        // 1. 디폴트 배송지로 되어저 있는 배송지를 defalut_yn 을 n 으로 바뀐다.
+        userMapper.updatedefult_to_n(patchUserAddressReq.getUser_idx());
+        System.out.println("update");
+        // 2. 상품을 등록하는데 디폴트 주소여부를 Y로 한다.
+        userMapper.updataUserAddress(patchUserAddressReq);
+        return patchUserAddressReq;
+    }
+    public PatchUserAddressReq PatchUserAddress(PatchUserAddressReq patchUserAddressReq) {
+            userMapper.updataUserAddress(patchUserAddressReq);
+            return patchUserAddressReq;
+
+    }
+
+    public void PostUserFavorite(int userIdxByJwt, int product_idx) {
+
+        int checkUserFavorite = userProvider.CheckUserFavrotite(userIdxByJwt,product_idx);
+
+        if(checkUserFavorite ==1 ){
+            int isDeleteOfFavorite = userMapper.isDeleteOfFavorite(userIdxByJwt,product_idx);
+            if(isDeleteOfFavorite == 0){
+                userMapper.UpdateDeleteUserFavorite(userIdxByJwt,product_idx);
+            }
+            else {
+                userMapper.UpdateCreateUserFavorite(userIdxByJwt,product_idx);
+            }
+            // 상태값만 변경
+        }
+        else  {
+            userMapper.CreateUserFavorite(userIdxByJwt,product_idx);// 상태값만 변경
+        }
+    }
+
+    public void PatchUserLikeAddresss(int user_idx, int address_idx) {
+        // 기존 즐겨찾기 주소지 그냥 주소지로 변경
+        userMapper.ChangeLikeToBasicAddress(user_idx);
+        userMapper.ChangeBasicToLikeAddress(user_idx,address_idx);
     }
 }

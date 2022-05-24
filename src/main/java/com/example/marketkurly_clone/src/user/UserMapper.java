@@ -4,8 +4,6 @@ import com.example.marketkurly_clone.src.user.model.GetUserRes;
 import com.example.marketkurly_clone.src.user.model.PostUserReq;
 import com.example.marketkurly_clone.src.user.model.*;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -26,4 +24,24 @@ public interface UserMapper {
     void CreateUserAddress(PostUserAddressReq postUserAddressReq);
 
 
+    List<GetUserAddressRes> GetUserAddress(int user_idx);
+
+    void updataUserAddress(PatchUserAddressReq patchUserAddressReq);
+
+    int CheckUserFavrotite(int userIdxByJwt, int product_idx);
+
+    int isDeleteOfFavorite(int userIdxByJwt, int product_idx);
+
+
+    void CreateUserFavorite(int userIdxByJwt, int product_idx);
+
+    void UpdateCreateUserFavorite(int userIdxByJwt, int product_idx);
+
+    void UpdateDeleteUserFavorite(int userIdxByJwt, int product_idx);
+
+    List getUserLikeAddress(int user_idx);
+
+    void ChangeLikeToBasicAddress(int user_idx);
+
+    void ChangeBasicToLikeAddress(int user_idx, int address_idx);
 }
