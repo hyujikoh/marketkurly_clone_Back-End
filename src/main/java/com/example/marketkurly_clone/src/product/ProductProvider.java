@@ -46,8 +46,18 @@ public class ProductProvider {
     public List<String> getProductsBySearch(String Keyword) throws BaseException{
             int ProductCountRes = productMapper.getProductCount1(Keyword);
             List<GetProductSearchRes> getProductSearchRes = productMapper.getProductSearchRes(Keyword);
+            List array123 = new ArrayList<>();
+            for (int i = 0; i<ProductCountRes;i++){
 
-        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes,getProductSearchRes));
+                GetProductSearchRes Product_info = productMapper.getProductSearchRes_key(getProductSearchRes.get(i).getProduct_idx());
+                List Product_detail_info = productMapper.Product_detail_info_keyword(getProductSearchRes.get(i).getProduct_idx());
+                List DetailList = new ArrayList<>(Arrays.asList(Product_info,Product_detail_info));
+                array123.add(DetailList);
+            }
+
+
+
+        List resultDetailList = new ArrayList<>(Arrays.asList(ProductCountRes,array123));
             return  resultDetailList;
 
     }

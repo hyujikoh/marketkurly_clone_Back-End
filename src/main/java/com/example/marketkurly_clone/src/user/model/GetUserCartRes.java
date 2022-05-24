@@ -5,14 +5,14 @@ import lombok.Data;
 
 @Data
 public class GetUserCartRes {
-    private int  product_idx;
+    private int   product_idx;
     private String url;
     private String name;
     private String product_desc;
-    private int  product_amount;
+    private int   product_amount;
     private String  price;
     private String discount_price;
-    private int  idx;
+    private int    idx;
     private String type;
 
 }

@@ -18,7 +18,26 @@
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
-        where name like concat('%', #{keyword}, '%')
+        where name like concat('%',#{Keyword}, '%')
+    </select>
+
+    <select id="getProductSearchRes_key" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.product.model.GetProductSearchRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.product_idx=#{keyword}
     </select>
     <!-- 상품 상세 페이지 관련 쿼리문-->
     <select id="getProductInfo" parameterType="int"
@@ -145,5 +164,11 @@
     <update id="UpdateAddCart" parameterType="int">
         update Cart set product_amount = product_amount + #{count} where user_idx = #{userIdxByJwt} and product_detail_idx = #{product_detail_idx} and product_idx = #{product_idx}
     </update>
+    <select id="Product_detail_info_keyword" parameterType="int" resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
+        select `index`, PDL.name, origin_price, PDL.discount_price, save_point_yn
+        from ProductDetailList PDL
+                 inner join marketkurly_ver1.Product P on PDL.product_idx = P.product_idx
+        where PDL.product_idx=#{keyword};
 
+    </select>
 </mapper>

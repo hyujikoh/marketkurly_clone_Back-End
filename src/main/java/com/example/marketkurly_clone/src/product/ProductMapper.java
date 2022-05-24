@@ -8,7 +8,7 @@ import java.util.*;
 @Mapper
 public interface ProductMapper {
      public List<GetProductSearchRes> getProductSearchRes(String keyword);
-
+     GetProductSearchRes getProductSearchRes_key(int keyword);
 
      /*
      * 상품 상세 페이지 관련 데이터 처리
@@ -29,4 +29,5 @@ public interface ProductMapper {
      int PostAddCart(int product_detail_idx, int count,int userIdxByJwt,int product_idx);
      int UpdateAddCart(int product_detail_idx, int count,int userIdxByJwt,int product_idx);
 
+    List<GetProductDetailListRes> Product_detail_info_keyword(int keyword);
 }

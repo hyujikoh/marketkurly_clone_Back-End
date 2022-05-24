@@ -115,7 +115,10 @@ public class ProductController {
         }
     }
 
-
+/*
+*  장바구니 등록 API
+*
+* */
     @ResponseBody
     @PostMapping("/{product_idx}/addcart")
     public BaseResponse<List<String>> PostAddCart(@PathVariable("product_idx") int product_idx,@RequestBody PostAddCartListReq postAddCartListReq) {
