@@ -46,4 +46,6 @@ public interface UserMapper {
     void ChangeBasicToLikeAddress(int user_idx, int address_idx);
 
     void DeleteUserAddress(int user_idx, int address_idx);
+
+    void EditCartProductCount(PatchEditCartProductCountReq patchEditCartProductCountReq);
 }

@@ -129,4 +129,15 @@ public class UserService {
     public void DeleteUserAddress(int user_idx, int address_idx) {
         userMapper.DeleteUserAddress(user_idx,address_idx);
     }
+
+
+    public void EditCartProductCount(PatchEditCartProductCountReq patchEditCartProductCountReq) throws BaseException{
+        if(patchEditCartProductCountReq.getIs_type()==1 ||patchEditCartProductCountReq.getIs_type()==0){
+            userMapper.EditCartProductCount(patchEditCartProductCountReq);
+        }
+        else{
+            throw new BaseException(RESPONSE_ERROR);
+        }
+
+    }
 }

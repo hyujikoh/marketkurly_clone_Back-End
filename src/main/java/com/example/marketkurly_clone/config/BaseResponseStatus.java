@@ -42,6 +42,7 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_USER_STATUS(false,2025,"탈퇴한 회원과 채팅을 할수 없습니다"),
     POST_USERS_EXIST_CHATROOM(false,2026,"이미 해당 사용자와 채팅을 하고있습니다."),
 
+
     /**
      * 3000 : Response 오류
      */
@@ -52,7 +53,6 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
-
 
     LOGIN_USERS_NOT_JOIN(false,3015 , "로그인실패"),
 

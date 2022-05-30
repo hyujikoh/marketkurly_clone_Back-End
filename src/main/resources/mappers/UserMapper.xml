@@ -155,4 +155,15 @@
     <delete id="DeleteUserAddress" parameterType="int">
         delete from Address where user_idx= #{user_idx} and address_idx = #{address_idx}
     </delete>
+
+    <update id="EditCartProductCount" parameterType="int">
+        <if test="is_type ==1">
+            update Cart Set product_amount = product_amount + 1 where user_idx = #{user_idx} and product_idx=#{product_idx} and product_detail_idx=#{product_detail_idx}
+
+        </if>
+        <if test="is_type ==0">
+            update Cart Set product_amount = product_amount - 1 where user_idx = #{user_idx} and product_idx=#{product_idx} and product_detail_idx=#{product_detail_idx}
+        </if>
+    </update>
+
 </mapper>
