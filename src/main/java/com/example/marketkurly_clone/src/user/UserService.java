@@ -125,4 +125,8 @@ public class UserService {
         userMapper.ChangeLikeToBasicAddress(user_idx);
         userMapper.ChangeBasicToLikeAddress(user_idx,address_idx);
     }
+
+    public void DeleteUserAddress(int user_idx, int address_idx) {
+        userMapper.DeleteUserAddress(user_idx,address_idx);
+    }
 }

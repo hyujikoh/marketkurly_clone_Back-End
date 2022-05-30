@@ -44,4 +44,6 @@ public interface UserMapper {
     void ChangeLikeToBasicAddress(int user_idx);
 
     void ChangeBasicToLikeAddress(int user_idx, int address_idx);
+
+    void DeleteUserAddress(int user_idx, int address_idx);
 }

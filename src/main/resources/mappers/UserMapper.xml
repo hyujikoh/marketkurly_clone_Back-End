@@ -151,4 +151,8 @@
     <update id="ChangeBasicToLikeAddress" parameterType="int">
         update Address Set is_like='Y' where user_idx = #{user_idx} and address_idx=#{address_idx}
     </update>
+
+    <delete id="DeleteUserAddress" parameterType="int">
+        delete from Address where user_idx= #{user_idx} and address_idx = #{address_idx}
+    </delete>
 </mapper>

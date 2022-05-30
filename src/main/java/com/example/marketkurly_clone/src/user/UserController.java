@@ -170,7 +170,10 @@ public class UserController {
     }
 
 
-
+/**
+ * 유저 장바구니 조회 API
+ *
+ * */
     @ResponseBody
     @GetMapping("/{user_idx}/Cart")
     public BaseResponse<List<String>> getUserCartList(@PathVariable("user_idx")int  user_idx){
@@ -189,6 +192,11 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+
+    /**
+     * 유저 배송지 등록 API
+     * */
     @ResponseBody
     @PostMapping("/{user_idx}/Address")
     public BaseResponse<PostUserAddressReq> PostUserAddress(@PathVariable("user_idx") int user_idx,@RequestBody PostUserAddressReq postUserAddressReq){
@@ -216,6 +224,11 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 유저 배송지 리스트 조회 API
+     *
+     * */
     @ResponseBody
     @GetMapping("/{user_idx}/Address")
     public BaseResponse<List<String>> GetUserAddress(@PathVariable ("user_idx") int user_idx){
@@ -235,6 +248,11 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 배송지 수정 API
+     *
+     * */
     @ResponseBody
     @PatchMapping("/{user_idx}/Address/{address_idx}")
     public BaseResponse<PatchUserAddressReq> PatchUserAddress(@PathVariable("user_idx") int user_idx,@PathVariable("address_idx") int address_idx , @RequestBody PatchUserAddressReq patchUserAddressReq){
@@ -264,6 +282,12 @@ public class UserController {
         }
     }
 
+
+
+    /**
+     * 유저 즐겨찾기 배송지 수정 API
+     *
+     * */
     @PatchMapping("/{user_idx}/Address/{address_idx}/like")
     public BaseResponse<String> PatchUserLikeAddresss(@PathVariable("user_idx") int user_idx,@PathVariable("address_idx") int address_idx){
 
@@ -282,6 +306,24 @@ public class UserController {
         }
 
     }
+
+    @DeleteMapping("/{user_idx}/Address/{address_idx}/delete")
+    public BaseResponse<String> DeleteUserAddress(@PathVariable("user_idx") int user_idx,@PathVariable("address_idx") int address_idx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(user_idx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            userService.DeleteUserAddress(user_idx,address_idx);
+            String result = "주소가 삭제 되었습니다";
+            return new BaseResponse<>(result);
+        }
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 
 
     @PostMapping("/favorite/{product_idx}")
