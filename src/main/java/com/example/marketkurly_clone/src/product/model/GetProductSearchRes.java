@@ -20,5 +20,6 @@ public class GetProductSearchRes {
     private int sales_count;
     private String url;
     private String update_at;
+    private String maxminum_purchase;
 
 }

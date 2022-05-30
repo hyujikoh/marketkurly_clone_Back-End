@@ -19,7 +19,7 @@
 
     <insert id="joinUser_address" parameterType="com.example.marketkurly_clone.src.user.model.PostUserReq">
         insert into Address(address_main, address_desc, default_yn, recevied_name, recevied_phone, user_idx, is_like)
-        values (#{address_main}, #{address_desc}, 'Y', '', '', last_insert_id(), 'Y')
+        values (#{address_main}, #{address_desc}, 'Y', #{name}, #{phone}, last_insert_id(), 'Y')
     </insert>
     <select id="get_pwd" parameterType="com.example.marketkurly_clone.src.user.model.PostLoginReq"
             resultType="com.example.marketkurly_clone.src.user.model.User">
@@ -140,7 +140,7 @@
             resultType="com.example.marketkurly_clone.src.user.model.GetUserLikeAddressRes">
         select address_main, address_desc, default_yn, recevied_name, recevied_phone,is_like
         from Address
-        where user_idx = #{user_idx} and is_like='Y' and default_yn = 'N'
+        where user_idx = #{user_idx} and is_like='Y'
     </select>
 
     <update id="ChangeLikeToBasicAddress" parameterType="int">

@@ -14,7 +14,8 @@
                is_kurlyonly,
                P.sales_count,
                PI.url,
-               P.update_at
+               P.update_at,
+               P.maxminum_purchase
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
@@ -33,7 +34,8 @@
                is_kurlyonly,
                P.sales_count,
                PI.url,
-               P.update_at
+               P.update_at,
+               P.maxminum_purchase
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
@@ -114,7 +116,8 @@
                         is_kurlyonly,
                         P.sales_count,
                         PI.url,
-                        P.update_at
+                        P.update_at,
+                        P.maxminum_purchase
         from Product P
                  left join Brand B on P.brand_idx = B.brand_idx
                  left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
