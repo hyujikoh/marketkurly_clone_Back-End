@@ -72,7 +72,7 @@
         select exists(select *
                       from Favorite
                       where product_idx = #{product_idx}
-                        and user_idx = #{userIdxByJwt}) as user_islike,
+                        and user_idx = #{userIdxByJwt} and delete_yn = 'N') as user_islike,
                count(*)                                 as review_cnt
         from ProductReview
         where product_idx = #{product_idx};
