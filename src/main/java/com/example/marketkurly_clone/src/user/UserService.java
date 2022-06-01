@@ -146,7 +146,10 @@ public class UserService {
     }
 
     public List<String> PostUserPayment(PostUserPaymentReq postUserPaymentReq) {
+
+        List array123 = new ArrayList<>();
         userMapper.PostUserPayment(postUserPaymentReq);
+        array123.add(postUserPaymentReq);
         int create_order_idx = userMapper.getIdx();
         System.out.println(create_order_idx);
         int len =  postUserPaymentReq.getOrderList().size();
@@ -156,7 +159,7 @@ public class UserService {
 
            userMapper.PostDetailOrderProduct(postUserPaymentReq.getOrderList().get(i));
        }
-        List array123 = new ArrayList<>();
+
 /*1. 주문 리스트 만들기, 2. 그 다음 생성된 order_idx 를 먹인다. */
         return array123;
     }
