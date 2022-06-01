@@ -61,10 +61,10 @@
                C.product_amount,
                case when J2.`index` is null then J1.price else J2.origin_price end            as price,
                case when J2.`index` is null then J1.discount_price else J2.discount_price end as discount_price,
-               J2.index                                                                   as idx,
+               J2.index                                                                       as idx,
                J1.type
         from Cart C
-                 left join (select P.product_idx, PI.url, P.name, P.price, P.discount_price,P.type
+                 left join (select P.product_idx, PI.url, P.name, P.price, P.discount_price, P.type
                             from Product P
 
                                      left join ProductImage PI on P.product_idx = PI.product_idx) J1
@@ -88,7 +88,7 @@
 
     <select id="GetUserAddress" parameterType="int"
             resultType="com.example.marketkurly_clone.src.user.model.GetUserAddressRes">
-        select address_idx, address_main, address_desc, default_yn, recevied_name, recevied_phone,is_like
+        select address_idx, address_main, address_desc, default_yn, recevied_name, recevied_phone, is_like
         from Address
         where user_idx = #{user_idx}
     </select>
@@ -138,32 +138,67 @@
 
     <select id="getUserLikeAddress" parameterType="int"
             resultType="com.example.marketkurly_clone.src.user.model.GetUserLikeAddressRes">
-        select address_main, address_desc, default_yn, recevied_name, recevied_phone,is_like
+        select address_main, address_desc, default_yn, recevied_name, recevied_phone, is_like
         from Address
-        where user_idx = #{user_idx} and is_like='Y'
+        where user_idx = #{user_idx}
+          and is_like = 'Y'
     </select>
 
     <update id="ChangeLikeToBasicAddress" parameterType="int">
-        update Address Set is_like='N' where user_idx = #{user_idx} and is_like='Y'
+        update Address
+        Set is_like='N'
+        where user_idx = #{user_idx}
+          and is_like = 'Y'
 
     </update>
 
     <update id="ChangeBasicToLikeAddress" parameterType="int">
-        update Address Set is_like='Y' where user_idx = #{user_idx} and address_idx=#{address_idx}
+        update Address
+        Set is_like='Y'
+        where user_idx = #{user_idx}
+          and address_idx = #{address_idx}
     </update>
 
     <delete id="DeleteUserAddress" parameterType="int">
-        delete from Address where user_idx= #{user_idx} and address_idx = #{address_idx}
+        delete
+        from Address
+        where user_idx = #{user_idx}
+          and address_idx = #{address_idx}
     </delete>
 
     <update id="EditCartProductCount" parameterType="int">
         <if test="is_type ==1">
-            update Cart Set product_amount = product_amount + 1 where user_idx = #{user_idx} and product_idx=#{product_idx} and product_detail_idx=#{product_detail_idx}
+            update Cart Set product_amount = product_amount + 1 where user_idx = #{user_idx} and
+            product_idx=#{product_idx} and product_detail_idx=#{product_detail_idx}
 
         </if>
         <if test="is_type ==0">
-            update Cart Set product_amount = product_amount - 1 where user_idx = #{user_idx} and product_idx=#{product_idx} and product_detail_idx=#{product_detail_idx}
+            update Cart Set product_amount = product_amount - 1 where user_idx = #{user_idx} and
+            product_idx=#{product_idx} and product_detail_idx=#{product_detail_idx}
         </if>
     </update>
+    <select id="GetUserInfoBeforePayment" parameterType="int"
+            resultType="com.example.marketkurly_clone.src.user.model.GetUserInfoBeforeCheckRes">
+        select name, phone, email
+        from User
+        where user_idx = #{user_idx}
+    </select>
+
+
+    <insert id="PostUserPayment" parameterType="com.example.marketkurly_clone.src.user.model.PostUserPaymentReq">
+        insert into `Order`(product_price, delivery_fee, product_discount, coupon_discount, use_point, payment_fee, earn_point,
+                            pay_method, user_idx, orderer, sender, recevied_name, recipient_phone, deliver_method, address,
+                            pickup_location, entrance_method, packaging_method, notify_time, non_release) values (#{product_price}, #{delivery_fee}, #{product_discount}, #{coupon_discount}, #{use_point},
+                                                                                                                  #{payment_fee}, #{earn_point}, #{pay_method},#{user_idx},  #{orderer}, #{sender}, #{recevied_name},
+                                                                                                                  #{recipient_phone}, #{deliver_method}, #{address}, #{pickup_location}, #{entrance_method},
+                                                                                                                  #{packaging_method}, #{notify_time}, #{non_release});
+
+    </insert>
+
+    <insert id="PostDetailOrderProduct" parameterType="com.example.marketkurly_clone.src.user.model.paydetailproduct">
+        insert into OrderProductMapping(order_idx, product_idx, idx, price, discount, amount)
+        values (#{order_idx}, #{product_idx}, #{idx}, #{price}, #{discount}, #{amount});
+
+    </insert>
 
 </mapper>

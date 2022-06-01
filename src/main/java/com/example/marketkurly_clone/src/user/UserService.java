@@ -3,6 +3,7 @@ package com.example.marketkurly_clone.src.user;
 
 
 import com.example.marketkurly_clone.config.BaseException;
+import com.example.marketkurly_clone.src.product.model.AddCart;
 import com.example.marketkurly_clone.src.user.model.*;
 import com.example.marketkurly_clone.utils.JwtService;
 import com.example.marketkurly_clone.utils.SHA256;
@@ -10,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
 
@@ -139,5 +143,21 @@ public class UserService {
             throw new BaseException(RESPONSE_ERROR);
         }
 
+    }
+
+    public List<String> PostUserPayment(PostUserPaymentReq postUserPaymentReq) {
+        userMapper.PostUserPayment(postUserPaymentReq);
+        int create_order_idx = userMapper.getIdx();
+        System.out.println(create_order_idx);
+        int len =  postUserPaymentReq.getOrderList().size();
+        System.out.println("상세 상품 리스트 길이:"+len);
+       for (int i =0;i<len;i++){
+           postUserPaymentReq.getOrderList().get(i).setOrder_idx(create_order_idx);
+
+           userMapper.PostDetailOrderProduct(postUserPaymentReq.getOrderList().get(i));
+       }
+        List array123 = new ArrayList<>();
+/*1. 주문 리스트 만들기, 2. 그 다음 생성된 order_idx 를 먹인다. */
+        return array123;
     }
 }

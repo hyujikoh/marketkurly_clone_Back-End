@@ -91,13 +91,7 @@ public class UserController {
     @PostMapping("/join")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
-//        if(postUserReq.getEmail() == null){
-//            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-//        }
-//        //이메일 정규표현
-//        if(!isRegexEmail(postUserReq.getEmail())){
-//            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-//        }
+
         try {
             System.out.println("1");
             PostUserRes postUserRes = userService.createUser(postUserReq);
@@ -345,5 +339,45 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 결제전 유저 정보
+     *
+     *
+     * */
+    @GetMapping("/{user_idx}/BeforePayment")
+    public BaseResponse<GetUserInfoBeforeCheckRes>GetUserInfoBeforePayment(@PathVariable("user_idx") int user_idx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if (user_idx != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            GetUserInfoBeforeCheckRes getUserInfoBeforeCheckRes = userProvider.GetUserInfoBeforePayment(user_idx);
+
+            return new BaseResponse<>(getUserInfoBeforeCheckRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 결제 완료
+     * */
+    @ResponseBody
+    @PostMapping("/{user_idx}/payment")
+    public BaseResponse<List<String>>PostUserPayment(@PathVariable("user_idx") int user_idx,@RequestBody PostUserPaymentReq postUserPaymentReq){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if (user_idx != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            postUserPaymentReq.setUser_idx(user_idx);
+            List<String> Result = userService.PostUserPayment(postUserPaymentReq);
+
+            return new BaseResponse<>(Result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

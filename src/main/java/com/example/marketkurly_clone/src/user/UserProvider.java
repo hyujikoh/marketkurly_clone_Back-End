@@ -102,4 +102,15 @@ public class UserProvider {
         int res = userMapper.CheckUserFavrotite(userIdxByJwt,product_idx);
         return res;
     }
+
+    public GetUserInfoBeforeCheckRes GetUserInfoBeforePayment(int user_idx) throws BaseException{
+        try{
+
+            GetUserInfoBeforeCheckRes getUserInfoBeforeCheckRes = userMapper.GetUserInfoBeforePayment(user_idx);
+            return getUserInfoBeforeCheckRes;
+        }
+        catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

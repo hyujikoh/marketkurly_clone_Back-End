@@ -48,4 +48,12 @@ public interface UserMapper {
     void DeleteUserAddress(int user_idx, int address_idx);
 
     void EditCartProductCount(PatchEditCartProductCountReq patchEditCartProductCountReq);
+
+    GetUserInfoBeforeCheckRes GetUserInfoBeforePayment(int user_idx);
+
+/**유저 결제 API 페이지*/
+    void PostUserPayment(PostUserPaymentReq postUserPaymentReq);
+/**유저 결제 상세 상품 리스트 등록
+ * @return*/
+    void PostDetailOrderProduct(paydetailproduct paydetailproduct);
 }
