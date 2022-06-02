@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='com.example.marketkurly_clone.src.home.HomeMapper'>
+
+    <select id="getRandomProductRes" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.delete_yn = 'N'
+        order by RAND() limit 8;
+    </select>
+
+
+    <select id="RandomProductInfo_key"  parameterType="int" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+
+        where P.delete_yn = 'N' and P.product_idx=#{product_idx}
+        order by RAND() limit 8;
+    </select>
+
+    <select id="RandomProductInfo_key_detail" parameterType="int" resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
+        select `index`, PDL.name, origin_price, PDL.discount_price, save_point_yn
+        from ProductDetailList PDL
+                 inner join marketkurly_ver1.Product P on PDL.product_idx = P.product_idx
+        where PDL.product_idx=#{product_idx};
+    </select>
+
+
+
+
+
+
+
+
+
+    <select id="getDiscountProductRes" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.delete_yn = 'N'
+        order by P.discount DESC limit 8;
+    </select>
+
+    <select id="DiscountProductInfo_key"  parameterType="int" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.delete_yn = 'N' and P.product_idx=#{product_idx}
+        order by P.discount DESC limit 8;
+    </select>
+
+
+    <select id="DiscountProductInfo_key_detail" parameterType="int" resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
+        select `index`, PDL.name, origin_price, PDL.discount_price, save_point_yn
+        from ProductDetailList PDL
+                 inner join marketkurly_ver1.Product P on PDL.product_idx = P.product_idx
+        where PDL.product_idx=#{product_idx};
+
+    </select>
+
+
+
+    <select id="getSalesProductRes" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.delete_yn = 'N'
+        order by P.sales_count DESC limit 8;
+    </select>
+
+
+    <select id="SalesProductInfo_key"  parameterType="int" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.delete_yn = 'N' and P.product_idx=#{product_idx}
+        order by P.sales_count DESC limit 8;
+    </select>
+
+
+
+    <select id="SalesProductInfo_key_detail" parameterType="int" resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
+        select `index`, PDL.name, origin_price, PDL.discount_price, save_point_yn
+        from ProductDetailList PDL
+                 inner join marketkurly_ver1.Product P on PDL.product_idx = P.product_idx
+        where PDL.product_idx=#{product_idx};
+
+    </select>
+
+
+
+    <select id="getKurlyProductRes" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.is_kurlyonly =1 and P.delete_yn = 'N'
+        limit 8
+    </select>
+
+    <select id="KurlyProductInfo_key"  parameterType="int" resultType="com.example.marketkurly_clone.src.home.model.GetHomePageRes">
+        select P.product_idx,
+               brand_name,
+               name,
+               subname,
+               price,
+               discount,
+               discount_price,
+               is_kurlyonly,
+               P.sales_count,
+               PI.url,
+               P.update_at,
+               P.maxminum_purchase
+        from Product P
+                 left join Brand B on P.brand_idx = B.brand_idx
+                 left join marketkurly_ver1.ProductImage PI on P.product_idx = PI.product_idx
+        where P.is_kurlyonly =1 and P.delete_yn = 'N' and P.product_idx=#{product_idx}
+        limit 8
+    </select>
+
+
+    <select id="KurlyProductInfo_key_detail" parameterType="int" resultType="com.example.marketkurly_clone.src.product.model.GetProductDetailListRes">
+        select `index`, PDL.name, origin_price, PDL.discount_price, save_point_yn
+        from ProductDetailList PDL
+                 inner join marketkurly_ver1.Product P on PDL.product_idx = P.product_idx
+        where PDL.product_idx=#{product_idx};
+
+    </select>
+
+</mapper>
