@@ -72,6 +72,27 @@ public class UserProvider {
 
     }
 
+    public POSTLOGINVER2 logIn_new(PostLoginReq postLoginReq) throws BaseException{
+        User user = userMapper.get_pwd(postLoginReq);
+        String encryptPwd;
+        try {
+            encryptPwd=new SHA256().encrypt(postLoginReq.getPwd());
+        } catch (Exception ignored) {
+            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
+        }
+
+        if(user.getPwd().equals(encryptPwd)){
+            int userIdx = user.getUser_idx();
+            String jwt = jwtService.createJwt_ver2(userIdx);
+            String refreshjwt = jwtService.create_refresh_Jwt_ver1(userIdx);
+            return new POSTLOGINVER2(userIdx,user.getName(),jwt,refreshjwt);
+        }
+        else{
+            throw new BaseException(FAILED_TO_LOGIN);
+        }
+
+    }
+
     public void checkUserPhone(GetCheckUserInfoReq getCheckUserInfoReq) throws BaseException {
         try{
             int res = userMapper.checkPhone(getCheckUserInfoReq);

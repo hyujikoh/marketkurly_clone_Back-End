@@ -101,6 +101,8 @@ public class UserController {
         }
     }
 
+
+
     /**
      * 로그인 API
      * [POST] /users/logIn
@@ -118,6 +120,39 @@ public class UserController {
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
+    }
+
+
+    @ResponseBody
+    @PostMapping("/logIn_new")
+    public BaseResponse<POSTLOGINVER2> logIn_new(@RequestBody PostLoginReq postLoginReq) {
+        try {
+            // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
+            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+            POSTLOGINVER2 postloginver2 = userProvider.logIn_new(postLoginReq);
+            return new BaseResponse<>(postloginver2);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/{userIdx}/refresh")
+    public BaseResponse<String> refresh(@PathVariable ("userIdx") int userIdx) throws BaseException {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx_refresh();
+            //userIdx와 접근한 유저가 같은지 확인
+//            if (userIdx != userIdxByJwt) {
+//                return new BaseResponse<>(INVALID_REFRESH_JWT);
+//            }
+            String jwt = jwtService.createJwt_ver2(userIdx);
+            String result = "a";
+            return new BaseResponse<>(jwt);
+        }
+        catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+
     }
 
     /**

@@ -2,6 +2,7 @@ package com.example.marketkurly_clone.utils;
 
 
 import com.example.marketkurly_clone.config.BaseException;
+import com.example.marketkurly_clone.config.Token;
 import com.example.marketkurly_clone.config.secret.Secret;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
-
+import static com.example.marketkurly_clone.config.Token.*;
 @Service
 public class JwtService {
 
@@ -33,6 +34,30 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365)))
                 .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
                 .compact();
+
+    }
+
+
+    public String createJwt_ver2(int userIdx){
+        Date now = new Date();
+        return Jwts.builder()
+                .setHeaderParam("type","jwt")
+                .claim("userIdx",userIdx)
+                .setIssuedAt(now)
+                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*1)))
+                .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
+                .compact();
+
+    }
+    public String create_refresh_Jwt_ver1(int userIdx){
+        Date now = new Date();
+        return Jwts.builder()
+                .claim("userIdx",userIdx)
+                .setIssuedAt(now)
+                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365)))
+                .signWith(SignatureAlgorithm.HS256, Secret.REFRESH_SECRET_KEY)
+                .compact();
+
     }
 
     /*
@@ -44,6 +69,12 @@ public class JwtService {
         return request.getHeader("X-ACCESS-TOKEN");
     }
 
+
+    public String getJwt_refresh(){
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        return request.getHeader("X-REFRESH-TOKEN");
+    }
+
     /*
     JWT에서 userIdx 추출
     @return int
@@ -52,6 +83,7 @@ public class JwtService {
     public int getUserIdx() throws BaseException{
         //1. JWT 추출
         String accessToken = getJwt();
+        System.out.println(accessToken);
         if(accessToken == null || accessToken.length() == 0){
             throw new BaseException(EMPTY_JWT);
         }
@@ -69,5 +101,29 @@ public class JwtService {
         // 3. userIdx 추출
         return claims.getBody().get("userIdx",Integer.class);
     }
+
+
+    public int getUserIdx_refresh() throws BaseException{
+        //1. JWT 추출
+        String accessToken = getJwt_refresh();
+        System.out.println(accessToken);
+        if(accessToken == null || accessToken.length() == 0){
+            throw new BaseException(EMPTY_JWT);
+        }
+
+        // 2. JWT parsing
+        Jws<Claims> claims;
+
+            claims = Jwts.parser()
+                    .setSigningKey(Secret.REFRESH_SECRET_KEY)
+                    .parseClaimsJws(accessToken);
+
+
+        // 3. userIdx 추출
+        return claims.getBody().get("userIdx",Integer.class);
+    }
+
+
+
 
 }

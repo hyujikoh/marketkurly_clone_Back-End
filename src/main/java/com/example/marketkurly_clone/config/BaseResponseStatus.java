@@ -23,6 +23,7 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
     EMPTY_REQUEST(false,2004,"키워드를 입력하지 않았습니다."),
     EMPTY_CLOSING_ACCOUNT_REASON(false,2005 ,"사유를 입력해주세요" ),
+    INVALID_REFRESH_JWT(false, 2006, "유효하지 않은 REFRESH__JWT입니다."),
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
 

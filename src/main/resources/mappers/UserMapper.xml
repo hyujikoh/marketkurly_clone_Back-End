@@ -54,22 +54,28 @@
 
     <select id="getUserCartList" parameterType="int"
             resultType="com.example.marketkurly_clone.src.user.model.GetUserCartRes">
-        select J1.product_idx,
+        select C.product_idx,
                J1.url,
                J1.name,
-               J2.name                                                                        as product_desc,
+               PDL.name                                                                       as product_desc,
                C.product_amount,
-               case when J2.`index` is null then J1.price else J2.origin_price end            as price,
-               case when J2.`index` is null then J1.discount_price else J2.discount_price end as discount_price,
-               J2.index                                                                       as idx,
+               case when PDL.index is null then J1.price else PDL.origin_price end            as price,
+               case when PDL.index is null then J1.discount_price else PDL.discount_price end as discount_price,
+               PDL.index                                                                      as idx,
                J1.type
         from Cart C
-                 left join (select P.product_idx, PI.url, P.name, P.price, P.discount_price, P.type
-                            from Product P
+                 inner join (select P.product_idx,
 
-                                     left join ProductImage PI on P.product_idx = PI.product_idx) J1
-                           on J1.product_idx = C.product_idx
-                 left join (select * from ProductDetailList) J2 on J2.`index` = C.product_detail_idx
+                                    P.name,
+                                    P.price,
+                                    P.discount_price,
+                                    P.type,
+                                    PI.url
+                             from Product P
+                                      inner join ProductImage PI on P.product_idx = PI.product_idx
+        ) J1
+                            on C.product_idx = J1.product_idx
+                 left join ProductDetailList PDL on C.product_idx = PDL.product_idx and C.product_detail_idx = PDL.`index`
         where C.user_idx = #{user_idx}
         ;
 
