@@ -1,5 +1,6 @@
 package com.example.marketkurly_clone.src.user;
 
+import com.example.marketkurly_clone.src.product.model.GetProductSearchRes;
 import com.example.marketkurly_clone.src.user.model.GetUserRes;
 import com.example.marketkurly_clone.src.user.model.PostUserReq;
 import com.example.marketkurly_clone.src.user.model.*;
@@ -56,4 +57,6 @@ public interface UserMapper {
 /**유저 결제 상세 상품 리스트 등록
  * @return*/
     void PostDetailOrderProduct(paydetailproduct paydetailproduct);
+
+    List<GetUserFavoriteRes> GetUserFavorite(int user_idx);
 }

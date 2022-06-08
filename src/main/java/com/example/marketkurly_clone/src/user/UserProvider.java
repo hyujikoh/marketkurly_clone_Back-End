@@ -2,6 +2,7 @@ package com.example.marketkurly_clone.src.user;
 
 
 import com.example.marketkurly_clone.config.BaseException;
+import com.example.marketkurly_clone.src.product.model.GetProductSearchRes;
 import com.example.marketkurly_clone.src.user.model.*;
 import com.example.marketkurly_clone.utils.JwtService;
 import com.example.marketkurly_clone.utils.SHA256;
@@ -133,5 +134,14 @@ public class UserProvider {
         catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+/*1. 찜 상품 */
+    public List<String> GetUserFavorite(int user_idx) {
+        //int favoriteProductCount = userMapper.favoriteProductCount(user_idx);
+        List<GetUserFavoriteRes> getProductFavoriteRes = userMapper.GetUserFavorite(user_idx);
+        List result = new ArrayList<>();
+
+        result.add(getProductFavoriteRes);
+        return result;
     }
 }

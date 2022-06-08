@@ -1,5 +1,6 @@
 package com.example.marketkurly_clone.src.user;
 
+import org.apache.tomcat.util.http.SameSiteCookies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.marketkurly_clone.config.BaseException;
@@ -7,7 +8,9 @@ import com.example.marketkurly_clone.config.BaseResponse;
 import com.example.marketkurly_clone.src.user.model.*;
 import com.example.marketkurly_clone.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.session.DefaultCookieSerializerCustomizer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -133,20 +136,34 @@ public class UserController {
         try {
             // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
             // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+
             POSTLOGINVER2 postloginver2 = userProvider.logIn_new(postLoginReq);
-            Cookie cookie = new Cookie("refreshToken","web");
-
-            // optional properties
-            cookie.setMaxAge(7*24*60*60); // 1 wee
-            //
-            //cookie.setSecure(true);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            cookie.setValue(postloginver2.getRefreshToken());
-            // add cookie to response
-            response.addCookie(cookie);
-
+//            Cookie cookie = new Cookie("refreshToken","web");
+//            // optional properties
+//            cookie.setMaxAge(7*24*60*60); // 1 wee
+//            //
+//            cookie.setSecure(true);
+//            cookie.setHttpOnly(true);
+//            cookie.setPath("/");
+//            cookie.setValue(postloginver2.getRefreshToken());
+//
+//            // add cookie to response
+//            response.addCookie(cookie);
+//            //response.addHeader("SameSite","None");
+            ResponseCookie cookieqwe = ResponseCookie.from("refreshToken", postloginver2.getRefreshToken())
+                    .domain("prod.hiimpedro.site")
+                    .maxAge(7*24*60*60)
+                    .sameSite("None")
+                    .secure(true)
+                    .httpOnly(true)
+                    .path("/")
+                    .build();
+            response.addHeader("Set-Cookie", cookieqwe.toString());
+            response.addHeader("Access-Control-Allow-Credentials","True");
+            response.addHeader("Access-Control-Allow-Origin","True");
             postloginver2.setRefreshToken("is secrect");
+
+
             List result = new ArrayList();
             result.add(postloginver2);
 
@@ -429,6 +446,26 @@ public class UserController {
             }
             postUserPaymentReq.setUser_idx(user_idx);
             List<String> Result = userService.PostUserPayment(postUserPaymentReq);
+
+            return new BaseResponse<>(Result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 찜목록 조회
+     * */
+    @ResponseBody
+    @GetMapping("/{user_idx}/favorite")
+    public BaseResponse<List<String>>GetUserFavorite(@PathVariable("user_idx") int user_idx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if (user_idx != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            List<String> Result = userProvider.GetUserFavorite(user_idx);
 
             return new BaseResponse<>(Result);
         } catch (BaseException exception) {

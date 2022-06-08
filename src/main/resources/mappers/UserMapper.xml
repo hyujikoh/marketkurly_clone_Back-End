@@ -206,5 +206,23 @@
         values (#{order_idx}, #{product_idx}, #{idx}, #{price}, #{discount}, #{amount});
 
     </insert>
+    <select id="GetUserFavorite" parameterType="int" resultType="com.example.marketkurly_clone.src.user.model.GetUserFavoriteRes">
+
+        select J1.product_idx, J1.brand_name, J1.name, J1.price, J1.discount, J1.discount_price, maxminum_purchase, PI.url
+        from Favorite F
+                 inner join (select P.product_idx,
+                                    B.brand_name,
+                                    P.name,
+                                    P.price,
+                                    P.discount,
+                                    P.discount_price,
+                                    P.maxminum_purchase,
+                                    P.delete_yn
+                             from Product P
+                                      left join Brand B on P.brand_idx = B.brand_idx) J1 on F.product_idx = J1.product_idx
+                 inner join ProductImage PI on F.product_idx = PI.product_idx
+        where F.user_idx = #{user_idx} and F.delete_yn ='N' and J1.delete_yn = 'N';
+
+    </select>
 
 </mapper>
