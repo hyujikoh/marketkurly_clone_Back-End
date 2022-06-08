@@ -160,7 +160,6 @@ public class UserController {
                     .build();
             response.addHeader("Set-Cookie", cookieqwe.toString());
             response.addHeader("Access-Control-Allow-Credentials","True");
-            response.addHeader("Access-Control-Allow-Origin","True");
             postloginver2.setRefreshToken("is secrect");
 
 
