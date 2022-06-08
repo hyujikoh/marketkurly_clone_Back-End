@@ -7,8 +7,12 @@ import com.example.marketkurly_clone.config.BaseResponse;
 import com.example.marketkurly_clone.src.user.model.*;
 import com.example.marketkurly_clone.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -125,12 +129,29 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/logIn_new")
-    public BaseResponse<POSTLOGINVER2> logIn_new(@RequestBody PostLoginReq postLoginReq) {
+    public BaseResponse<List> logIn_new(@RequestBody PostLoginReq postLoginReq, HttpServletResponse response) {
         try {
             // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
             // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
             POSTLOGINVER2 postloginver2 = userProvider.logIn_new(postLoginReq);
-            return new BaseResponse<>(postloginver2);
+            Cookie cookie = new Cookie("refreshToken","web");
+
+            // optional properties
+            cookie.setMaxAge(7*24*60*60); // 1 wee
+            //
+            //cookie.setSecure(true);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setValue(postloginver2.getRefreshToken());
+            // add cookie to response
+            response.addCookie(cookie);
+
+            postloginver2.setRefreshToken("is secrect");
+            List result = new ArrayList();
+            result.add(postloginver2);
+
+            result.add(HttpStatus.OK);
+            return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
