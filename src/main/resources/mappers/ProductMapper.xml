@@ -127,25 +127,23 @@
                            on P.product_idx = CPM.product_idx
         where CPM.category_idx = #{Category}
            or CPM.category_parent = #{Category}
+        order by P.product_idx limit 6 offset #{Pages}
+
     </select>
 
     <select id="getProductCount" parameterType="int" resultType="int">
         <if test="7 >= Category">
-            select
-            count(distinct P.product_idx)
-            from Product P
-            left join (select CPM2.category_idx,C.category_parent,CPM2.product_idx from CategortProductMapping CPM2
-            inner join Category C on CPM2.category_idx = C.category_idx) CPM on P.product_idx = CPM.product_idx
-            where CPM.category_parent = #{Category}
+            select count(*) from (select distinct(CategortProductMapping.product_idx)from CategortProductMapping
+            inner join Category C on CategortProductMapping.category_idx = C.category_idx
+            where C.category_parent = #{Category}
+            order by CategortProductMapping.product_idx limit 6 offset #{Pages}) as query
         </if>
 
         <if test="Category>7">
-            select
-            count(distinct P.product_idx)
-            from Product P
-            left join (select CPM2.category_idx,C.category_parent,CPM2.product_idx from CategortProductMapping CPM2
-            inner join Category C on CPM2.category_idx = C.category_idx) CPM on P.product_idx = CPM.product_idx
-            where CPM.category_idx = #{Category}
+            select count(*) from (select distinct(CategortProductMapping.product_idx)from CategortProductMapping
+            inner join Category C on CategortProductMapping.category_idx = C.category_idx
+            where C.category_idx = #{Category}
+            order by CategortProductMapping.product_idx limit 6 offset #{Pages}) as query
         </if>
     </select>
 

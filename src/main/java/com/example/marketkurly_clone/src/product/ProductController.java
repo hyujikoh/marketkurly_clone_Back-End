@@ -93,17 +93,17 @@ public class ProductController {
 
 
     /**
-     * 검색어로 제품 조회 API
+     * 카테고리 기준 제품 조회 API
      * [GET] products/productName?Keyword=
      */
     @GetMapping("/product")
-    public BaseResponse<List<String>> getProductByCategory(@RequestParam(required = true) int Category) {
+    public BaseResponse<List<String>> getProductByCategory(@RequestParam(required = true) int Category,@RequestParam(required = true) int Pages) {
         try {
 //            if (Category == ) { // 검색어를 입력하지 않았을 때
 //                System.out.println("검색어 입력 안함");
 //                return new BaseResponse<>(EMPTY_REQUEST); // 2004 키워드를 입력하지 않았습니다
 //            }
-            List<String> getProductCategoryRes = productProvider.getProductByCategory(Category);
+            List<String> getProductCategoryRes = productProvider.getProductByCategory(Category,Pages);
             if (getProductCategoryRes.size() == 0) { // 검색어에 해당하는 정보가 없을 때
                 System.out.println("검색어에 해당하는 정보 없음");
                 return new BaseResponse<>(EMPTY_RESPONSE); // 3001 입력한 키워드에 대한 검색결과가 없습니다.

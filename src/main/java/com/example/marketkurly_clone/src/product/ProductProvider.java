@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.marketkurly_clone.config.BaseResponseStatus.*;
-
 @Service
 public class ProductProvider {
     private final JwtService jwtService;
@@ -55,10 +53,10 @@ public class ProductProvider {
 
     }
 
-    public List<String> getProductByCategory(int Category) throws BaseException {
-
-        List <GetProductSearchRes> productCategoryRes = productMapper.getProductCategoryRes(Category);
-        int ProductCountRes = productMapper.getProductCount(Category);
+    public List<String> getProductByCategory(int Category, int Pages) throws BaseException {
+        int count_List = 6*(Pages-1);
+        List <GetProductSearchRes> productCategoryRes = productMapper.getProductCategoryRes(Category,count_List);
+        int ProductCountRes = productMapper.getProductCount(Category,count_List);
 
         List array123 = new ArrayList<>();
 

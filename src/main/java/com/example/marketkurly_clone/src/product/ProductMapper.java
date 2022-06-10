@@ -23,8 +23,8 @@ public interface ProductMapper {
 
      //장바구니 상품 존재유무 확인
      int CheckExistProduct (int product_detail_idx,int userIdxByJwt,int product_idx);
-     List<GetProductSearchRes> getProductCategoryRes(int Category);
-     int getProductCount(int Category);
+     List<GetProductSearchRes> getProductCategoryRes(int Category,int Pages);
+     int getProductCount(int Category,int Pages);
      int getProductCount1(String Keyword);
      int PostAddCart(int product_detail_idx, int count,int userIdxByJwt,int product_idx);
      int UpdateAddCart(int product_detail_idx, int count,int userIdxByJwt,int product_idx);
