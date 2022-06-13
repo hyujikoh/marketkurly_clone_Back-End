@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -70,9 +71,17 @@ public class JwtService {
     }
 
 
-    public String getJwt_refresh(){
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-        return request.getHeader("X-REFRESH-TOKEN");
+    public String getJwt_refresh() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        Cookie[] cookies = request.getCookies();
+        String result = null;
+        for (Cookie c : cookies) {
+//            if("refrest_Token".equals(c.getValue())){
+//                return c.getValue();
+//            }
+            result = c.getValue();
+        }
+        return result;
     }
 
     /*

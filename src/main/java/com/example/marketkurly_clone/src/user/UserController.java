@@ -151,10 +151,7 @@ public class UserController {
 //            response.addCookie(cookie);
 //            //response.addHeader("SameSite","None");
             ResponseCookie cookieqwe = ResponseCookie.from("refreshToken", postloginver2.getRefreshToken())
-                    .domain("prod.hiimpedro.site")
                     .maxAge(7*24*60*60)
-                    .sameSite("None")
-                    .secure(true)
                     .httpOnly(true)
                     .path("/")
                     .build();
@@ -179,9 +176,9 @@ public class UserController {
         try{
             int userIdxByJwt = jwtService.getUserIdx_refresh();
             //userIdx와 접근한 유저가 같은지 확인
-//            if (userIdx != userIdxByJwt) {
-//                return new BaseResponse<>(INVALID_REFRESH_JWT);
-//            }
+            if (userIdx != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_REFRESH_JWT);
+            }
             String jwt = jwtService.createJwt_ver2(userIdx);
             String result = "a";
             return new BaseResponse<>(jwt);
